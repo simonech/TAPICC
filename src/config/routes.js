@@ -92,21 +92,24 @@ module.exports.routes = {
   },
 
   'POST /job/:id/submit': // todo -> add tasks and assets as optional parameters
-  {
-    controller: 'JobController',
-    action: 'create',
-    swagger: {
-      summary: 'Submit a Job',
-      description: 'Submit a Job, optionally with assets and tasks'
-    }
-  },
+    {
+      controller: 'JobController',
+      action: 'create',
+      swagger: {
+        summary: 'Submit a Job',
+        description: 'Submit a Job, optionally with assets and tasks'
+      }
+    },
 
   'DELETE /job/:parentid/asset/:id': {
     controller: 'AssetController',
     action: 'destroy',
     swagger: {
       summary: 'Delete an Asset',
-      description: 'Delete an Asset which belongs to a specific job'
+      description: 'Delete an Asset which belongs to a specific job',
+      tags: [
+        'Asset'
+      ]
     }
   },
   'GET /job/:parentid/asset/:id': {
@@ -114,7 +117,18 @@ module.exports.routes = {
     action: 'findOne',
     swagger: {
       summary: 'Get an Asset',
-      description: 'Get an Asset which belongs to a specific job'
+      description: 'Get an Asset which belongs to a specific job',
+      tags: [
+        'Asset'
+      ],
+      responses: {
+        200: {
+          description: "The requested resource",
+          schema: {
+            $ref: "#/definitions/asset"
+          }
+        }
+      }
     }
   },
   'PUT /job/:parentid/asset/:id': {
@@ -122,7 +136,24 @@ module.exports.routes = {
     action: 'update',
     swagger: {
       summary: 'Update an Asset',
-      description: 'Update an Asset which belongs to a specific job'
+      description: 'Update an Asset which belongs to a specific job',
+      tags: [
+        'Asset'
+      ],
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          type: 'string'
+        },
+        {
+          name: 'parentid',
+          in: 'path',
+          required: true,
+          type: 'string'
+        }
+      ]
     }
   },
   'GET /job/:parentid/asset': {
@@ -130,7 +161,18 @@ module.exports.routes = {
     action: 'find',
     swagger: {
       summary: 'List all Assets',
-      description: 'List all Assets which belongs to a specific job'
+      description: 'List all Assets which belongs to a specific job',
+      tags: [
+        'Asset'
+      ],
+      responses: {
+        200: {
+          description: "The requested resource",
+          schema: {
+            $ref: "#/definitions/asset"
+          }
+        }
+      }
     }
   },
   'POST /job/:parentid/asset': {
@@ -138,7 +180,10 @@ module.exports.routes = {
     action: 'create',
     swagger: {
       summary: 'Create an Assets',
-      description: 'Create an Assets which will belong to a specific job'
+      description: 'Create an Assets which will belong to a specific job',
+      tags: [
+        'Asset'
+      ]
     }
   },
 
@@ -147,7 +192,10 @@ module.exports.routes = {
     action: 'destroy',
     swagger: {
       summary: 'Delete a Task',
-      description: 'Deletes a Task which belongs to a specific job'
+      description: 'Deletes a Task which belongs to a specific job',
+      tags: [
+        'Task'
+      ]
     }
   },
   'GET /job/:parentid/task/:id': {
@@ -155,7 +203,10 @@ module.exports.routes = {
     action: 'findOne',
     swagger: {
       summary: 'Get a Task',
-      description: 'Gets a Task which belongs to a specific job'
+      description: 'Gets a Task which belongs to a specific job',
+      tags: [
+        'Task'
+      ]
     }
   },
   'PUT /job/:parentid/task/:id': {
@@ -163,7 +214,10 @@ module.exports.routes = {
     action: 'update',
     swagger: {
       summary: 'Update a Task',
-      description: 'Updates a Task which belongs to a specific job'
+      description: 'Updates a Task which belongs to a specific job',
+      tags: [
+        'Task'
+      ]
     }
   },
   'GET /job/:parentid/task': {
@@ -171,7 +225,10 @@ module.exports.routes = {
     action: 'find',
     swagger: {
       summary: 'List all Task',
-      description: 'Lists all Task which belong to a specific job'
+      description: 'Lists all Task which belong to a specific job',
+      tags: [
+        'Task'
+      ]
     }
   },
   'POST /job/:parentid/task': {
@@ -179,37 +236,71 @@ module.exports.routes = {
     action: 'create',
     swagger: {
       summary: 'Create a Task',
-      description: 'Creates a Task which will belong to a specific job'
+      description: 'Creates a Task which will belong to a specific job',
+      tags: [
+        'Task'
+      ]
     }
   },
 
   // todo -> make file upload and download work
-  'POST /job/:parentid/asset/uploadFile': // todo -> this endpoint also creates an asset
-  {
-    controller: 'AssetController',
-    action: 'uploadFile',
-    swagger: {
-      summary: 'Upload an asset file and create an asset',
-      description: 'Upload an asset file and create an asset'
-    }
-  },
-  'GET /job/:parentid/asset/:id/downloadFile': {
+  'POST /job/:parentid/asset/uploadfile': // todo -> this endpoint also creates an asset
+    {
+      controller: 'AssetController',
+      action: 'uploadFile',
+      swagger: {
+        summary: 'Upload an asset file and create an asset',
+        description: 'Upload an asset file and create an asset',
+        tags: [
+          'Asset'
+        ],
+        responses: {
+          '200': {
+            schema: {
+              "$ref": "#/definitions/asset",
+            }
+          }
+        }
+      }
+    },
+  'GET /job/:parentid/asset/:id/downloadfile': {
     controller: 'AssetController',
     action: 'downloadFile',
     swagger: {
       summary: 'Download an asset file',
-      description: 'Download an asset file'
+      description: 'Download an asset file',
+      tags: [
+        'Asset'
+      ],
+      responses: {
+        '200': {
+          schema: {
+            "$ref": "",
+            type: 'file'
+          }
+        }
+      }
     }
   },
-  'POST /job/:parentid/task/:id/uploadDeliverable': {
+  'POST /job/:parentid/task/:id/uploaddeliverable': {
     controller: 'TaskController',
     action: 'uploadFile',
     swagger: {
       summary: 'Upload deliverable file',
-      description: 'Upload deliverable file'
+      description: 'Upload deliverable file',
+      tags: [
+        'Task'
+      ],
+      responses: {
+        '200': {
+          schema: {
+            "$ref": ""
+          }
+        }
+      }
     }
   },
-  'GET /job/:parentid/task/:id/downloadDeliverable': {
+  'GET /job/:parentid/task/:id/downloaddeliverable': {
     controller: 'TaskController',
     action: 'downloadFile',
     swagger: {
@@ -224,11 +315,14 @@ module.exports.routes = {
       responses: {
         '200': {
           description: 'Deliverable file',
+          schema: {
+            "$ref": "",
+            type: 'file'
+          },
           content: {
             'application/json': {
               schema: {
-                type: 'string',
-                format: 'binary'
+                type: 'file'
               }
             }
           }
@@ -252,8 +346,8 @@ module.exports.routes = {
     controller: 'TaskController',
     action: 'destroy',
     swagger: {
-      summary: 'Delete a Tasks',
-      description: 'Delete a Tasks'
+      summary: 'Delete a Task',
+      description: 'Delete a Task'
     }
   },
   'GET /task/:id': {
