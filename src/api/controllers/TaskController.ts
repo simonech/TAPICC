@@ -6,8 +6,9 @@
  */
 import express = require('express');
 import { Model } from 'sails-typings';
-declare var Asset: Model;
+declare var Task: Model;
 declare var Job: Model;
+
 
 module.exports = {
     
