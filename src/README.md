@@ -12,4 +12,4 @@ install npm dependencies
 ```npm install```
 
 # Running
-```sails lift```
+```npm start```
